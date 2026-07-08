@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#06070d" id="themeColorMeta">
 <title>Athul T S — Mobile Application Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,6 +48,8 @@
     position: relative;
     min-height: 100vh;
     min-height: 100dvh;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   a { color: inherit; text-decoration: none; }
@@ -535,7 +538,7 @@
       <div class="photo-wrap" id="photoWrap">
         <div class="photo-ring"></div>
         <div class="photo-frame" id="photoFrame">
-          <img src="assets/profile-cutout.png" alt="Athul T S">
+          <img src="assets/profile.jpg" alt="Athul T S">
         </div>
         <div class="badge-float glass"><span class="dot2"></span>Open to work</div>
       </div>
@@ -788,15 +791,17 @@
 
 </main>
 
-<footer>© 2026 Athul T S · Mobile Application Developer</footer>
+<footer>© 2026 Athul Sethumadhavan</footer>
 
 <script>
   const root = document.documentElement;
   const toggle = document.getElementById('themeToggle');
+  const themeColorMeta = document.getElementById('themeColorMeta');
   function setTheme(light) {
     root.classList.toggle('light', light);
     toggle.textContent = light ? '☀️' : '🌙';
     localStorage.setItem('theme', light ? 'light' : 'dark');
+    if (themeColorMeta) themeColorMeta.setAttribute('content', light ? '#eef0f7' : '#06070d');
   }
   setTheme(localStorage.getItem('theme') === 'light');
   toggle.addEventListener('click', () => setTheme(!root.classList.contains('light')));
