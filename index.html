@@ -99,6 +99,27 @@
   @keyframes drift2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-50px,60px) scale(1.1); } }
   @keyframes drift3 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(40px,-50px) scale(1.2); } }
 
+  /* On small screens the blob cluster concentrates near the top, leaving the
+     lower half of the screen plain. Replace it with a single smooth
+     top-to-bottom gradient that always spans the full fixed viewport. */
+  @media (max-width: 640px) {
+    .mesh span { display: none; }
+    .mesh {
+      background: linear-gradient(180deg,
+        rgba(34,211,238,0.24) 0%,
+        rgba(192,132,252,0.18) 33%,
+        rgba(244,114,182,0.16) 66%,
+        rgba(34,211,238,0.22) 100%);
+    }
+    html.light .mesh {
+      background: linear-gradient(180deg,
+        rgba(34,211,238,0.13) 0%,
+        rgba(192,132,252,0.1) 33%,
+        rgba(244,114,182,0.09) 66%,
+        rgba(34,211,238,0.12) 100%);
+    }
+  }
+
   /* ---------- GLASS BASE ---------- */
   .glass {
     background: var(--glass);
@@ -201,22 +222,23 @@
   }
 
   /* ---------- HERO ---------- */
-  .hero { padding: 80px 0 70px; }
-  .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 50px; align-items: center; }
+  .hero { padding: 70px 0 60px; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 0.92fr; gap: 40px; align-items: center; }
 
   .eyebrow {
     display: inline-flex; align-items: center; gap: 10px;
-    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-    padding: 8px 16px; border-radius: 999px; margin-bottom: 26px;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 14px; color: var(--text);
   }
   .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--neon-1); box-shadow: 0 0 12px var(--neon-1); animation: pulse 2s ease-in-out infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 
   .hero h1 {
-    font-size: clamp(2.4rem, 5.6vw, 4.4rem);
-    font-weight: 800; line-height: 1.04; margin-bottom: 22px;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 800; line-height: 1.18; margin-bottom: 4px;
+    position: relative;
   }
-  .hero h1 .grad {
+  .hero h1 .accent {
     background: linear-gradient(100deg, var(--neon-1), var(--neon-2), var(--neon-3));
     background-size: 200% auto;
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
@@ -224,65 +246,92 @@
   }
   @keyframes gradShift { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
 
-  .hero p.lead { font-size: 1.1rem; color: var(--text-dim); max-width: 500px; line-height: 1.7; margin-bottom: 32px; }
+  .hero .role-line {
+    display: block;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 800; line-height: 1.18;
+    margin-bottom: 20px;
+  }
 
-  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 40px; }
+  .hero p.lead { font-size: 1.05rem; color: var(--text-dim); max-width: 460px; line-height: 1.7; margin-bottom: 32px; }
+
+  .hero-cta { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; margin: 28px 0 26px; }
+  .btn-cv {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 15px 30px; border-radius: 10px;
+    border: 1.5px solid var(--neon-1); color: var(--text);
+    font-weight: 700; font-size: 0.92rem;
+    transition: all .3s ease;
+  }
+  .btn-cv:hover { background: var(--neon-1); color: #05060a; transform: translateY(-3px); box-shadow: 0 10px 28px rgba(34,211,238,0.35); }
   .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 14px 26px; font-weight: 700; font-size: 0.92rem;
-    border-radius: 999px; cursor: pointer; transition: all .3s ease;
-    border: 1px solid transparent;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 15px 30px; border-radius: 999px;
+    font-weight: 700; font-size: 0.95rem; text-decoration: none;
+    transition: transform .3s ease, box-shadow .3s ease;
   }
   .btn-primary {
     background: linear-gradient(120deg, var(--neon-1), var(--neon-2));
-    color: #05060a;
+    color: #05060a; box-shadow: var(--shadow-glow);
   }
-  .btn-primary:hover { box-shadow: 0 0 30px rgba(34,211,238,0.5); transform: translateY(-3px); }
-  .btn-glass { border-color: var(--glass-border); background: var(--glass-strong); color: var(--text); }
-  .btn-glass:hover { border-color: var(--neon-2); transform: translateY(-3px); }
+  .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(34,211,238,0.35); }
+  .link-underline {
+    font-weight: 700; font-size: 0.92rem; color: var(--text);
+    text-decoration: underline; text-underline-offset: 5px; text-decoration-color: var(--neon-2);
+    transition: color .2s ease;
+  }
+  .link-underline:hover { color: var(--neon-2); }
 
-  .hero-stats { display: flex; gap: 14px; flex-wrap: wrap; }
-  .stat-pill {
-    padding: 14px 20px; border-radius: 16px; min-width: 120px;
-  }
-  .stat-pill strong { display: block; font-size: 1.5rem; font-family: 'Outfit', sans-serif; font-weight: 700;
-    background: linear-gradient(120deg, var(--neon-1), var(--neon-2));
-    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  .stat-pill span { font-size: 0.78rem; color: var(--text-dim); font-weight: 600; }
+  .hero-mini-stats { display: flex; gap: 22px; flex-wrap: wrap; font-size: 0.82rem; color: var(--text-dim); }
+  .hero-mini-stats strong { color: var(--text); font-family: 'Outfit', sans-serif; }
 
-  .photo-wrap { position: relative; justify-self: center; perspective: 1000px; }
-  .photo-ring {
-    position: absolute; inset: -12px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--neon-1), var(--neon-2), var(--neon-3));
-    opacity: 0.65; filter: blur(18px); z-index: 0;
-    animation: gradShift 6s linear infinite, ringPulse 4s ease-in-out infinite;
-    background-size: 200% auto;
+  .photo-wrap {
+    position: relative; justify-self: center;
+    width: 100%; max-width: 460px;
   }
-  @keyframes ringPulse { 0%,100% { opacity: 0.55; } 50% { opacity: 0.8; } }
   .photo-frame {
     position: relative; z-index: 1;
-    width: 100%; max-width: 260px; aspect-ratio: 1/1;
-    margin: 0 auto;
-    border-radius: 50%; overflow: hidden;
-    border: 3px solid var(--glass-strong);
-    box-shadow: 0 18px 40px rgba(0,0,0,0.35);
-    transition: transform .2s ease-out;
-    transform-style: preserve-3d;
-    background: radial-gradient(circle at 50% 32%, rgba(34,211,238,0.25), rgba(192,132,252,0.18) 55%, var(--bg) 100%);
+    width: 98%; margin: 0 auto;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
   }
   .photo-frame img {
     width: 100%; height: 100%;
     object-fit: cover;
     object-position: 50% 15%;
     display: block;
+    filter: grayscale(100%) contrast(1.05);
+    transition: filter .4s ease;
   }
+  html.light .photo-frame img { filter: none; }
+
+  .tech-badge {
+    position: absolute; z-index: 2;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--glass-strong);
+    border: 1px solid var(--glass-border);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.35);
+    animation: badgeFloat 5s ease-in-out infinite;
+  }
+  @keyframes badgeFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .tech-badge.swift { top: 2%; left: -4%; animation-delay: 0s; }
+  .tech-badge.xcode { bottom: 20%; left: -8%; animation-delay: 1.2s; }
+  .tech-badge.flutter { bottom: -2%; right: 10%; animation-delay: 2.4s; }
+
   .badge-float {
-    position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
-    padding: 10px 20px; border-radius: 999px; font-weight: 700; font-size: 0.82rem;
+    position: absolute; top: 4%; right: -6px;
+    padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 0.8rem;
     display: flex; align-items: center; gap: 8px; white-space: nowrap; z-index: 2;
   }
   .badge-float .dot2 { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 10px #4ade80; }
+
+  @media (max-width: 620px) {
+    .tech-badge { width: 48px; height: 48px; }
+    .tech-badge svg { width: 24px; height: 24px; }
+  }
 
   /* ---------- MARQUEE ---------- */
   .marquee-heading {
@@ -316,10 +365,25 @@
 
   /* ---------- ABOUT ---------- */
   .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 46px; }
-  .about-grid p { color: var(--text-dim); line-height: 1.85; font-size: 1.03rem; }
+  .about-grid .about-copy { border-left: 2px solid var(--glass-border); padding-left: 24px; }
+  .about-tagline {
+    font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700;
+    color: var(--text); line-height: 1.5; margin-bottom: 16px;
+  }
+  .about-tagline .accent-hl {
+    background: linear-gradient(120deg, var(--neon-1), var(--neon-2));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .about-grid p.about-body { color: var(--text-dim); line-height: 1.85; font-size: 1.03rem; }
   .stat-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
-  .stat-card { padding: 24px; transition: transform .3s ease, box-shadow .3s ease; }
-  .stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-glow); }
+  .stat-card { padding: 22px 24px; transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
+  .stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-glow); border-color: var(--neon-1); }
+  .stat-card .stat-icon {
+    width: 34px; height: 34px; border-radius: 10px; margin-bottom: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(34,211,238,0.16), rgba(192,132,252,0.16));
+    color: var(--neon-1);
+  }
   .stat-card .num { font-family: 'Outfit', sans-serif; font-size: 1.9rem; font-weight: 700;
     background: linear-gradient(120deg, var(--neon-1), var(--neon-2));
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
@@ -479,15 +543,14 @@
 
   @media (max-width: 860px) {
     .hero-grid { grid-template-columns: 1fr; }
-    .photo-wrap { order:-1; max-width: 260px; margin: 0 auto 20px; }
+    .photo-wrap { order:-1; max-width: 340px; margin: 0 auto 30px; }
     .about-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 480px) {
     .contact-main { font-size: 0.85rem; padding: 13px 18px; }
     .icon-btn { width: 46px; height: 46px; }
     .stat-row { grid-template-columns: 1fr 1fr; gap: 12px; }
-    .hero-stats { gap: 10px; }
-    .stat-pill { min-width: 0; flex: 1 1 auto; padding: 12px 14px; }
+    .hero-mini-stats { gap: 14px; font-size: 0.76rem; }
     .contact-box { padding: 44px 22px; }
   }
 
@@ -537,24 +600,32 @@
   <section class="hero">
     <div class="hero-grid">
       <div>
-        <div class="eyebrow glass"><span class="dot"></span>Available for new roles</div>
-        <h1>MOBILE APP<br><span class="grad">DEVELOPER</span></h1>
-        <p class="lead">Athul T S — 9+ years building scalable, high-performance iOS &amp; Flutter applications. Focused on clean architecture, secure networking, and apps that don't crash.</p>
+        <div class="eyebrow"><span class="dot"></span>Available for new roles</div>
+        <h1><span class="accent">Athul T S</span></h1>
+        <span class="role-line">Mobile App Developer</span>
+        <p class="lead">9+ years building scalable, high-performance iOS &amp; Flutter applications. Focused on clean architecture, secure networking, and apps that don't crash.</p>
         <div class="hero-cta">
-          <a href="mailto:athulsethumadhavan@gmail.com" class="btn btn-primary">Get in touch →</a>
-          <a href="https://github.com/athulsethumadhavan/" target="_blank" class="btn btn-glass">View GitHub</a>
-          <a href="https://www.linkedin.com/in/athul-t-s-08064982" target="_blank" class="btn btn-glass">LinkedIn</a>
+          <a href="assets/AthulResume.pdf" target="_blank" class="btn-cv">View my CV</a>
+          <a href="mailto:athulsethumadhavan@gmail.com" class="link-underline">Get in touch</a>
         </div>
-        <div class="hero-stats">
-          <div class="stat-pill glass"><strong data-count="9" data-suffix="+">0</strong><span>Years Experience</span></div>
-          <div class="stat-pill glass"><strong data-count="12" data-suffix="+">0</strong><span>Shipped Apps</span></div>
-          <div class="stat-pill glass"><strong style="font-size:1.15rem;">Qatar</strong><span>Open to Relocation</span></div>
+        <div class="hero-mini-stats">
+          <div><strong>9+</strong> Years Experience</div>
+          <div><strong>12+</strong> Shipped Apps</div>
+          <div><strong>Qatar</strong> Open to Relocation</div>
         </div>
       </div>
       <div class="photo-wrap" id="photoWrap">
-        <div class="photo-ring"></div>
         <div class="photo-frame" id="photoFrame">
-          <img src="assets/profile.jpg" alt="Athul T S">
+          <img src="assets/profile-cutout.png" alt="Athul T S">
+        </div>
+        <div class="tech-badge swift" title="Swift">
+          <svg width="30" height="30" viewBox="0 0 24 24"><path fill="var(--text)" d="M12 2.5c2.8 1.8 4.3 4.6 4.1 7.8 1.3-.3 2.5-.9 3.4-1.8-.4 2.1-1.7 3.9-3.5 5.1 1.7.2 3.4-.1 4.9-.9-1.9 2.6-4.9 4.3-8.2 4.3-1.9 0-3.7-.5-5.2-1.5.3 0 .6 0 .9-.1-1.6-.6-3-1.7-3.9-3.1.6.1 1.2.1 1.8 0-1.7-.8-3-2.3-3.5-4.1.5.3 1.1.5 1.7.6C1.6 8.1.9 6.2 1 4.2c1.9 2.3 4.7 3.8 7.9 4-.2-.8-.2-1.6 0-2.4C9.4 4 10.6 2.9 12 2.5z"/></svg>
+        </div>
+        <div class="tech-badge xcode" title="Xcode">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--text)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12l-8.5 8.5a2.12 2.12 0 1 1-3-3L12 9"/><path d="M17.64 15L22 10.64"/><path d="M20.91 11.7l-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 5.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 9.83v1.05l2.66 2.68"/></svg>
+        </div>
+        <div class="tech-badge flutter" title="Flutter">
+          <svg width="26" height="26" viewBox="0 0 24 24"><path fill="var(--text)" opacity="0.9" d="M14.5 2L4.5 12l4 4L23 2h-8.5z"/><path fill="var(--text)" opacity="0.55" d="M14.5 22L8.5 16l4-4 8.5 8.5-6.5 1.5z"/><path fill="var(--text)" d="M12.5 14l-4 4 4 4 4-4-4-4z"/></svg>
         </div>
         <div class="badge-float glass"><span class="dot2"></span>Open to work</div>
       </div>
@@ -572,14 +643,29 @@
   <!-- ABOUT -->
   <section id="about" class="reveal">
     <div class="section-tag">Who I Am</div>
-    <h2 class="section-title">Building mobile products that scale, ship, and survive production.</h2>
+    <h2 class="section-title">Mobile App Developer.</h2>
     <div class="about-grid">
-      <p>Experienced Mobile Application Developer with 9+ years of expertise in building scalable, high-performance mobile applications. Strong background in iOS and Flutter development with a focus on clean architecture, performance optimization, and secure app development. Expert in MVVM-C, Repository Pattern, secure networking, and scalable app architecture. Currently based in Qatar, open to relocation or remote work.</p>
+      <div class="about-copy">
+        <p class="about-tagline"><span class="accent-hl">9+ years</span> turning ideas into fast, secure, production-ready apps.</p>
+        <p class="about-body">Experienced Mobile Application Developer with 9+ years of expertise in building scalable, high-performance mobile applications. Strong background in iOS and Flutter development with a focus on clean architecture, performance optimization, and secure app development. Expert in MVVM-C, Repository Pattern, secure networking, and scalable app architecture. Currently based in Qatar, open to relocation or remote work.</p>
+      </div>
       <div class="stat-row">
-        <div class="stat-card glass"><div class="num">iOS</div><div class="lbl">Swift · SwiftUI · Combine</div></div>
-        <div class="stat-card glass"><div class="num">Flutter</div><div class="lbl">Cross-platform delivery</div></div>
-        <div class="stat-card glass"><div class="num">AES</div><div class="lbl">Secure by design</div></div>
-        <div class="stat-card glass"><div class="num">MVVM-C</div><div class="lbl">Clean architecture</div></div>
+        <div class="stat-card glass">
+          <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.7 12.5c0-3.1 2.5-4.6 2.6-4.7-1.4-2.1-3.7-2.4-4.5-2.4-1.9-.2-3.7 1.1-4.7 1.1-1 0-2.5-1.1-4.1-1-2.1 0-4 1.2-5.1 3.1-2.2 3.8-.6 9.4 1.6 12.5 1 1.5 2.3 3.2 3.9 3.1 1.6-.1 2.2-1 4.1-1s2.5 1 4.1 1c1.7 0 2.8-1.5 3.9-3.1 1.2-1.8 1.7-3.5 1.7-3.6-.1 0-3.4-1.3-3.5-5zM15.3 3.6c.9-1.1 1.5-2.6 1.3-4.1-1.3.1-2.8.9-3.7 1.9-.8.9-1.6 2.5-1.3 3.9 1.4.1 2.8-.7 3.7-1.7z"/></svg></div>
+          <div class="num">iOS</div><div class="lbl">Swift · SwiftUI · Combine</div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#54C5F8" d="M14.5 2L4.5 12l4 4L23 2h-8.5z"/><path fill="#01579B" d="M14.5 22L8.5 16l4-4 8.5 8.5-6.5 1.5z"/><path fill="#29B6F6" d="M12.5 14l-4 4 4 4 4-4-4-4z"/></svg></div>
+          <div class="num">Flutter</div><div class="lbl">Cross-platform delivery</div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div class="num">AES</div><div class="lbl">Secure by design</div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="9" y="15" width="6" height="6" rx="1"/><path d="M6 9v3a3 3 0 0 0 3 3h0"/><path d="M18 9v3a3 3 0 0 1-3 3h0"/></svg></div>
+          <div class="num">MVVM-C</div><div class="lbl">Clean architecture</div>
+        </div>
       </div>
     </div>
   </section>
