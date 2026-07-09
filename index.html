@@ -20,6 +20,9 @@
     --neon-2: #c084fc;
     --neon-3: #f472b6;
     --shadow-glow: 0 0 40px rgba(34,211,238,0.15);
+    --mesh-blur: 130px;
+    --mesh-scale: 1.3;
+    --mesh-opacity: 0.35;
   }
 
   html.light {
@@ -30,6 +33,9 @@
     --text: #0f1424;
     --text-dim: #545e77;
     --shadow-glow: 0 0 40px rgba(192,132,252,0.12);
+    --mesh-blur: 90px;
+    --mesh-scale: 1;
+    --mesh-opacity: 0.35;
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -81,14 +87,13 @@
   .mesh span {
     position: absolute;
     border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.55;
+    filter: blur(var(--mesh-blur, 90px));
+    opacity: var(--mesh-opacity, 0.55);
   }
-  html.light .mesh span { opacity: 0.35; }
-  .mesh .m1 { width: 480px; height: 480px; background: var(--neon-1); top: -120px; left: -100px; animation: drift1 16s ease-in-out infinite; }
-  .mesh .m2 { width: 420px; height: 420px; background: var(--neon-2); top: 20%; right: -140px; animation: drift2 20s ease-in-out infinite; }
-  .mesh .m3 { width: 380px; height: 380px; background: var(--neon-3); bottom: -100px; left: 20%; animation: drift3 18s ease-in-out infinite; }
-  .mesh .m4 { width: 300px; height: 300px; background: var(--neon-1); bottom: 10%; right: 10%; animation: drift1 22s ease-in-out infinite reverse; }
+  .mesh .m1 { width: calc(480px * var(--mesh-scale, 1)); height: calc(480px * var(--mesh-scale, 1)); background: var(--neon-1); top: -120px; left: -100px; animation: drift1 16s ease-in-out infinite; }
+  .mesh .m2 { width: calc(420px * var(--mesh-scale, 1)); height: calc(420px * var(--mesh-scale, 1)); background: var(--neon-2); top: 20%; right: -140px; animation: drift2 20s ease-in-out infinite; }
+  .mesh .m3 { width: calc(380px * var(--mesh-scale, 1)); height: calc(380px * var(--mesh-scale, 1)); background: var(--neon-3); bottom: -100px; left: 20%; animation: drift3 18s ease-in-out infinite; }
+  .mesh .m4 { width: calc(300px * var(--mesh-scale, 1)); height: calc(300px * var(--mesh-scale, 1)); background: var(--neon-1); bottom: 10%; right: 10%; animation: drift1 22s ease-in-out infinite reverse; }
 
   @keyframes drift1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(60px,40px) scale(1.15); } }
   @keyframes drift2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-50px,60px) scale(1.1); } }
