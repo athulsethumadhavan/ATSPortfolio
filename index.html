@@ -510,13 +510,9 @@
     white-space: normal;
     word-break: break-word;
     text-align: center;
+    cursor: pointer; border: none; font-family: inherit;
   }
   .contact-main svg { flex-shrink: 0; }
-  .email-short { display: none; }
-  @media (max-width: 640px) {
-    .email-full { display: none; }
-    .email-short { display: inline; }
-  }
   .contact-icons {
     position: relative; z-index: 1;
     display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
@@ -526,6 +522,7 @@
     width: 50px; height: 50px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     color: var(--text-dim);
+    cursor: pointer; font: inherit;
     transition: transform .25s ease, color .25s ease, box-shadow .25s ease;
   }
   .icon-btn:hover {
@@ -533,13 +530,48 @@
     transform: translateY(-4px);
     box-shadow: var(--shadow-glow);
   }
-  .flag-badge {
-    position: absolute; bottom: -4px; right: -4px;
-    width: 20px; height: 20px; border-radius: 50%;
-    background: var(--bg); border: 1px solid var(--glass-border);
+
+  /* ---------- CONTACT MODAL ---------- */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 400;
     display: flex; align-items: center; justify-content: center;
-    font-size: 0.72rem; line-height: 1;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    opacity: 0; pointer-events: none; transition: opacity .3s ease;
+    padding: 20px;
   }
+  .modal-overlay.open { opacity: 1; pointer-events: auto; }
+  .modal-box {
+    width: 100%; max-width: 460px; padding: 38px; position: relative;
+    max-height: 90vh; overflow-y: auto;
+    transform: translateY(18px) scale(.97); transition: transform .3s ease;
+  }
+  .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px; width: 34px; height: 34px; border-radius: 50%;
+    background: var(--glass-strong); border: 1px solid var(--glass-border); color: var(--text);
+    font-size: 1.2rem; line-height: 1; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: border-color .2s ease;
+  }
+  .modal-close:hover { border-color: var(--neon-1); }
+  .modal-box h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+  .modal-sub { color: var(--text-dim); font-size: 0.92rem; margin-bottom: 26px; line-height: 1.6; }
+  .form-group { margin-bottom: 18px; text-align: left; }
+  .form-group label {
+    display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-dim);
+    margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .form-group input, .form-group textarea {
+    width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--glass-border);
+    background: var(--glass); color: var(--text); font-family: inherit; font-size: 0.95rem;
+    resize: vertical; transition: border-color .2s ease;
+  }
+  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--neon-1); }
+  .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .form-error {
+    color: var(--neon-3); font-size: 0.85rem; margin-bottom: 14px; min-height: 1.2em; text-align: left;
+  }
+  #cfSubmit { width: 100%; justify-content: center; }
+  .form-note { font-size: 0.78rem; color: var(--text-dim); text-align: left; margin-top: 14px; line-height: 1.6; }
 
   footer { padding: 30px 0 46px; text-align:center; color: var(--text-dim); font-size: 0.85rem; }
 
@@ -607,7 +639,7 @@
         <span class="role-line">Mobile App Developer</span>
         <p class="lead">9+ years building scalable, high-performance iOS &amp; Flutter applications. Focused on clean architecture, secure networking, and apps that don't crash.</p>
         <div class="hero-cta">
-          <a href="assets/AthulResume.pdf" target="_blank" class="btn-cv">View my CV</a>
+          <a href="assets/AthulResume.pdf" target="_blank" rel="noopener noreferrer" class="btn-cv">View my CV</a>
           <a href="mailto:athulsethumadhavan@gmail.com" class="link-underline">Get in touch</a>
         </div>
         <div class="hero-mini-stats">
@@ -812,11 +844,11 @@
         <h3>KidWrite</h3>
         <p>A fun and interactive writing practice app designed for children under 6 years old. Trace letters and numbers with your finger and get instant feedback.</p>
         <div class="store-links">
-          <a href="https://apps.apple.com/in/app/kidwrite/id6781143198" target="_blank" class="store-btn glass">
+          <a href="https://apps.apple.com/in/app/kidwrite/id6781143198" target="_blank" rel="noopener noreferrer" class="store-btn glass">
             <svg width="16" height="16" viewBox="0 0 384 512" fill="currentColor"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5c0 26.2 4.8 53.3 14.4 81.2 12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
             App Store
           </a>
-          <a href="https://play.google.com/store/apps/details?id=com.atsIOSDev.kidWrite" target="_blank" class="store-btn glass">
+          <a href="https://play.google.com/store/apps/details?id=com.atsIOSDev.kidWrite" target="_blank" rel="noopener noreferrer" class="store-btn glass">
             <svg width="16" height="16" viewBox="0 0 512 512" fill="currentColor"><path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
             Google Play
           </a>
@@ -858,25 +890,19 @@
       <h2>Got a project<br>in mind?</h2>
       <p>Qatar (since Jan 2024) · Open to relocation &amp; remote</p>
 
-      <a href="mailto:athulsethumadhavan@gmail.com" class="btn btn-primary contact-main">
+      <button type="button" id="openContactModal" class="btn btn-primary contact-main">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6l-10 7L2 6"/><path d="M2 6h20v12H2z"/></svg>
-        <span class="email-full">athulsethumadhavan@gmail.com</span>
-        <span class="email-short">Mail me</span>
-      </a>
+        Contact Me
+      </button>
 
       <div class="contact-icons">
-        <a href="tel:+97430268210" class="icon-btn glass" aria-label="Call +974 30268210 (Qatar)" title="+974 30268210">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <span class="flag-badge">🇶🇦</span>
-        </a>
-        <a href="tel:+919447383989" class="icon-btn glass" aria-label="Call +91 9447383989 (India)" title="+91 9447383989">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <span class="flag-badge">🇮🇳</span>
-        </a>
-        <a href="https://github.com/athulsethumadhavan/" target="_blank" class="icon-btn glass" aria-label="GitHub" title="GitHub">
+        <button type="button" id="openWhatsApp" class="icon-btn glass" aria-label="Message on WhatsApp" title="WhatsApp">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12.004 2C6.486 2 2.006 6.48 2.006 12c0 1.762.462 3.484 1.34 4.997L2 22l5.132-1.348A9.958 9.958 0 0 0 12.004 22h.004c5.518 0 9.997-4.48 9.997-10C22.005 6.48 17.526 2 12.004 2zm5.868 14.13c-.248.694-1.435 1.328-2.006 1.413-.511.077-1.159.109-1.871-.118a17.14 17.14 0 0 1-1.694-.625c-2.981-1.287-4.928-4.289-5.077-4.487-.148-.199-1.213-1.612-1.213-3.074 0-1.463.768-2.182 1.04-2.479.272-.298.594-.372.792-.372.198 0 .397.002.57.01.182.01.427-.069.669.51.247.595.841 2.058.916 2.207.075.149.124.322.025.52-.1.199-.149.323-.298.497-.148.173-.312.387-.446.52-.148.148-.303.309-.13.606.173.298.77 1.271 1.653 2.059 1.135 1.012 2.093 1.325 2.39 1.475.297.148.471.124.644-.075.173-.198.743-.867.94-1.164.199-.298.397-.249.67-.15.272.1 1.733.818 2.03.967.297.15.495.223.57.347.075.124.075.719-.173 1.413z"/></svg>
+        </button>
+        <a href="https://github.com/athulsethumadhavan/" target="_blank" rel="noopener noreferrer" class="icon-btn glass" aria-label="GitHub" title="GitHub">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.7.1-.7 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.3-3.2-.1-.3-.6-1.5.1-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6.2 0c2.3-1.6 3.4-1.2 3.4-1.2.7 1.7.2 2.9.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3z"/></svg>
         </a>
-        <a href="https://www.linkedin.com/in/athul-t-s-08064982" target="_blank" class="icon-btn glass" aria-label="LinkedIn" title="LinkedIn">
+        <a href="https://www.linkedin.com/in/athul-t-s-08064982" target="_blank" rel="noopener noreferrer" class="icon-btn glass" aria-label="LinkedIn" title="LinkedIn">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
         </a>
       </div>
@@ -884,6 +910,37 @@
   </section>
 
 </main>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="contactModalOverlay">
+  <div class="modal-box glass" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+    <button type="button" class="modal-close" id="contactModalClose" aria-label="Close">&times;</button>
+    <h3 id="contactModalTitle">Send me a message</h3>
+    <p class="modal-sub">Fill this in — it'll open your email app with everything ready to send to me directly.</p>
+    <form id="contactForm" novalidate>
+      <div class="form-group">
+        <label for="cf-name">Name</label>
+        <input type="text" id="cf-name" name="name" autocomplete="name" required>
+      </div>
+      <div class="form-group">
+        <label for="cf-email">Email</label>
+        <input type="email" id="cf-email" name="email" autocomplete="email" required>
+      </div>
+      <div class="form-group">
+        <label for="cf-message">Message</label>
+        <textarea id="cf-message" name="message" rows="5" required></textarea>
+      </div>
+      <!-- honeypot: hidden from real visitors, bots tend to fill every field they find -->
+      <div class="hp-field" aria-hidden="true">
+        <label for="cf-company">Company</label>
+        <input type="text" id="cf-company" name="company" tabindex="-1" autocomplete="off">
+      </div>
+      <p class="form-error" id="cfError"></p>
+      <button type="submit" class="btn btn-primary" id="cfSubmit">Send Message</button>
+      <p class="form-note">This opens your own email app with the message pre-filled — you'll still need to hit send there.</p>
+    </form>
+  </div>
+</div>
 
 <footer>© 2026 Athul Sethumadhavan</footer>
 
@@ -981,6 +1038,86 @@
     backToTop.classList.toggle('show', window.scrollY > 500);
   });
   backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Contact modal
+  const openContactModal = document.getElementById('openContactModal');
+  const contactModalOverlay = document.getElementById('contactModalOverlay');
+  const contactModalClose = document.getElementById('contactModalClose');
+  const contactForm = document.getElementById('contactForm');
+  const cfError = document.getElementById('cfError');
+
+  function openModal() {
+    contactModalOverlay.classList.add('open');
+    document.getElementById('cf-name').focus();
+  }
+  function closeModal() {
+    contactModalOverlay.classList.remove('open');
+    cfError.textContent = '';
+  }
+
+  openContactModal.addEventListener('click', openModal);
+  contactModalClose.addEventListener('click', closeModal);
+  contactModalOverlay.addEventListener('click', (e) => {
+    if (e.target === contactModalOverlay) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && contactModalOverlay.classList.contains('open')) closeModal();
+  });
+
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    cfError.textContent = '';
+
+    const name = document.getElementById('cf-name').value.trim();
+    const email = document.getElementById('cf-email').value.trim();
+    const message = document.getElementById('cf-message').value.trim();
+    const honeypot = document.getElementById('cf-company').value.trim();
+
+    // bot trap: real visitors never see or fill this field
+    if (honeypot) {
+      contactForm.reset();
+      closeModal();
+      return;
+    }
+
+    if (!name || !email || !message) {
+      cfError.textContent = 'Please fill in all fields.';
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      cfError.textContent = 'Please enter a valid email address.';
+      return;
+    }
+    if (message.length < 10) {
+      cfError.textContent = 'Please add a little more detail to your message.';
+      return;
+    }
+    const linkCount = (message.match(/https?:\/\//g) || []).length;
+    if (linkCount > 2) {
+      cfError.textContent = 'Your message looks like spam (too many links) — please revise it.';
+      return;
+    }
+
+    const subject = encodeURIComponent('Portfolio contact from ' + name);
+    const body = encodeURIComponent(message + '\n\n— ' + name + ' (' + email + ')');
+    window.location.href = 'mailto:athulsethumadhavan@gmail.com?subject=' + subject + '&body=' + body;
+
+    contactForm.reset();
+    closeModal();
+  });
+
+  // WhatsApp — number is only assembled at click-time (not a static href in the
+  // page source) so simple scrapers can't harvest it straight from the HTML.
+  const openWhatsAppBtn = document.getElementById('openWhatsApp');
+  if (openWhatsAppBtn) {
+    openWhatsAppBtn.addEventListener('click', () => {
+      const waNumber = '97430268210'; // country code + number, no + or spaces
+      const waMessage = encodeURIComponent("Hi Athul, I saw your portfolio and would like to connect.");
+      const win = window.open('https://wa.me/' + waNumber + '?text=' + waMessage, '_blank');
+      // reverse-tabnabbing hardening: strip the opened tab's access back to this page
+      if (win) win.opener = null;
+    });
+  }
 </script>
 
 </body>
