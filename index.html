@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#06070d" id="themeColorMeta">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://wa.me; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://wa.me mailto:;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://wa.me; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://wa.me mailto:;">
 <title>Athul T S — Mobile Application Developer</title>
 <meta name="description" content="Athul T S — Mobile Application Developer with 9+ years building native iOS and Flutter apps.">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -289,6 +289,7 @@
     font-weight: 700; font-size: 0.92rem; color: var(--text);
     text-decoration: underline; text-underline-offset: 5px; text-decoration-color: var(--neon-2);
     transition: color .2s ease;
+    background: none; border: none; padding: 0; font-family: inherit; cursor: pointer;
   }
   .link-underline:hover { color: var(--neon-2); }
 
@@ -488,6 +489,30 @@
   .edu-card .yr { font-size: 0.8rem; font-weight: 700; color: var(--text-dim);
     border:1px solid var(--glass-border); padding:6px 14px; border-radius:999px; }
 
+  /* ---------- CERTIFICATIONS ---------- */
+  .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .cert-card {
+    padding: 26px 44px 26px 28px; display: flex; align-items: flex-start; gap: 16px;
+    position: relative; cursor: pointer;
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+  }
+  .cert-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-glow); border-color: var(--neon-1); }
+  .cert-icon {
+    width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(34,211,238,0.16), rgba(192,132,252,0.16));
+    color: var(--neon-1);
+  }
+  .cert-info h3 { font-size: 1rem; font-weight: 700; line-height: 1.4; margin-bottom: 10px; }
+  .cert-meta { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; font-size: 0.8rem; font-weight: 600; color: var(--text-dim); }
+  .cert-issuer { color: var(--neon-1); }
+  .cert-date { border: 1px solid var(--glass-border); padding: 3px 11px; border-radius: 999px; }
+  .cert-view {
+    position: absolute; top: 22px; right: 20px; color: var(--text-dim);
+    transition: color .25s ease, transform .25s ease;
+  }
+  .cert-card:hover .cert-view { color: var(--neon-1); transform: translate(2px,-2px); }
+
   /* ---------- CONTACT ---------- */
   .contact-box {
     position: relative; padding: 60px 44px; text-align:center; overflow: hidden;
@@ -574,6 +599,21 @@
   #cfSubmit { width: 100%; justify-content: center; }
   .form-note { font-size: 0.78rem; color: var(--text-dim); text-align: left; margin-top: 14px; line-height: 1.6; }
 
+  /* ---------- CERTIFICATE MODAL ---------- */
+  .cert-modal-box {
+    max-width: 880px; width: 92vw; height: 85vh; max-height: 85vh;
+    padding: 26px; display: flex; flex-direction: column;
+  }
+  .cert-modal-box h3 { padding-right: 40px; margin-bottom: 14px; flex-shrink: 0; }
+  .pdf-frame-wrap {
+    flex: 1; min-height: 0; border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--glass-border); background: #3b3d45;
+  }
+  .pdf-frame { width: 100%; height: 100%; border: none; display: block; }
+  @media (max-width: 640px) {
+    .cert-modal-box { height: 88vh; max-height: 88vh; padding: 18px; }
+  }
+
   footer { padding: 30px 0 46px; text-align:center; color: var(--text-dim); font-size: 0.85rem; }
 
   @media (max-width: 860px) {
@@ -611,6 +651,7 @@
       <li><a href="#skills">Skills</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#projects">Projects</a></li>
+      <li><a href="#certifications">Certifications</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-right">
@@ -624,6 +665,7 @@
       <li><a href="#skills">Skills</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#projects">Projects</a></li>
+      <li><a href="#certifications">Certifications</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
@@ -641,7 +683,7 @@
         <p class="lead">9+ years building scalable, high-performance iOS &amp; Flutter applications. Focused on clean architecture, secure networking, and apps that don't crash.</p>
         <div class="hero-cta">
           <a href="assets/AthulResume.pdf" target="_blank" rel="noopener noreferrer" class="btn-cv">View my CV</a>
-          <a href="mailto:athulsethumadhavan@gmail.com" class="link-underline">Get in touch</a>
+          <button type="button" id="heroGetInTouch" class="link-underline">Get in touch</button>
         </div>
         <div class="hero-mini-stats">
           <div><strong>9+</strong> Years Experience</div>
@@ -885,6 +927,54 @@
     </div>
   </section>
 
+  <!-- CERTIFICATIONS -->
+  <section id="certifications" class="reveal">
+    <div class="section-tag">Credentials</div>
+    <h2 class="section-title">Certifications</h2>
+    <div class="cert-grid">
+      <a class="cert-card glass" href="assets/certs/ai-fluency-capabilities-limitations.pdf" data-cert-title="AI Fluency: AI Capabilities &amp; Limitations">
+        <div class="cert-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg></div>
+        <div class="cert-info">
+          <h3>AI Fluency: AI Capabilities &amp; Limitations</h3>
+          <div class="cert-meta"><span class="cert-issuer">Anthropic</span><span class="cert-date">Aug 2026</span></div>
+        </div>
+        <svg class="cert-view" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M21 16v3a2 2 0 0 1-2 2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      </a>
+      <a class="cert-card glass" href="assets/certs/ai-fluency-framework-foundations.pdf" data-cert-title="AI Fluency: Framework &amp; Foundations">
+        <div class="cert-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg></div>
+        <div class="cert-info">
+          <h3>AI Fluency: Framework &amp; Foundations</h3>
+          <div class="cert-meta"><span class="cert-issuer">Anthropic</span><span class="cert-date">Aug 2026</span></div>
+        </div>
+        <svg class="cert-view" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M21 16v3a2 2 0 0 1-2 2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      </a>
+      <a class="cert-card glass" href="assets/certs/claude-101.pdf" data-cert-title="Claude 101">
+        <div class="cert-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg></div>
+        <div class="cert-info">
+          <h3>Claude 101</h3>
+          <div class="cert-meta"><span class="cert-issuer">Anthropic</span><span class="cert-date">Aug 2026</span></div>
+        </div>
+        <svg class="cert-view" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M21 16v3a2 2 0 0 1-2 2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      </a>
+      <a class="cert-card glass" href="assets/certs/claude-code-101.pdf" data-cert-title="Claude Code 101">
+        <div class="cert-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg></div>
+        <div class="cert-info">
+          <h3>Claude Code 101</h3>
+          <div class="cert-meta"><span class="cert-issuer">Anthropic</span><span class="cert-date">Aug 2026</span></div>
+        </div>
+        <svg class="cert-view" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M21 16v3a2 2 0 0 1-2 2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      </a>
+      <a class="cert-card glass" href="assets/certs/claude-code-in-action.pdf" data-cert-title="Claude Code in Action">
+        <div class="cert-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg></div>
+        <div class="cert-info">
+          <h3>Claude Code in Action</h3>
+          <div class="cert-meta"><span class="cert-issuer">Anthropic</span><span class="cert-date">Aug 2026</span></div>
+        </div>
+        <svg class="cert-view" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M21 16v3a2 2 0 0 1-2 2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      </a>
+    </div>
+  </section>
+
   <!-- CONTACT -->
   <section id="contact" class="reveal">
     <div class="contact-box glass">
@@ -943,7 +1033,18 @@
   </div>
 </div>
 
-<footer>© 2026 Athul Sethumadhavan</footer>
+<!-- CERTIFICATE MODAL -->
+<div class="modal-overlay" id="certModalOverlay">
+  <div class="modal-box glass cert-modal-box" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
+    <button type="button" class="modal-close" id="certModalClose" aria-label="Close">&times;</button>
+    <h3 id="certModalTitle">Certificate</h3>
+    <div class="pdf-frame-wrap">
+      <iframe id="certFrame" class="pdf-frame" title="Certificate PDF preview"></iframe>
+    </div>
+  </div>
+</div>
+
+<footer>© 2026 Athul Sethumadhavan . All Rights Reserved</footer>
 
 <script>
   const root = document.documentElement;
@@ -991,18 +1092,6 @@
     });
   }, { threshold: 0.5 });
   counters.forEach(el => counterIO.observe(el));
-
-  const photoWrap = document.getElementById('photoWrap');
-  const photoFrame = document.getElementById('photoFrame');
-  if (photoWrap && window.matchMedia('(pointer: fine)').matches) {
-    photoWrap.addEventListener('mousemove', (e) => {
-      const rect = photoWrap.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      photoFrame.style.transform = `rotateY(${x * 12}deg) rotateX(${-y * 12}deg) scale(1.02)`;
-    });
-    photoWrap.addEventListener('mouseleave', () => { photoFrame.style.transform = 'rotateY(0) rotateX(0) scale(1)'; });
-  }
 
   document.querySelectorAll('.marquee-track').forEach(track => {
     track.parentElement.addEventListener('mouseenter', () => track.style.animationPlayState = 'paused');
@@ -1057,6 +1146,8 @@
   }
 
   openContactModal.addEventListener('click', openModal);
+  const heroGetInTouch = document.getElementById('heroGetInTouch');
+  if (heroGetInTouch) heroGetInTouch.addEventListener('click', openModal);
   contactModalClose.addEventListener('click', closeModal);
   contactModalOverlay.addEventListener('click', (e) => {
     if (e.target === contactModalOverlay) closeModal();
@@ -1105,6 +1196,44 @@
 
     contactForm.reset();
     closeModal();
+  });
+
+  // Certificate modal — clicking a certification card opens the PDF in an
+  // animated popup instead of navigating to a new tab.
+  const certModalOverlay = document.getElementById('certModalOverlay');
+  const certModalClose = document.getElementById('certModalClose');
+  const certFrame = document.getElementById('certFrame');
+  const certModalTitle = document.getElementById('certModalTitle');
+  let certReturnFocus = null;
+
+  function openCertModal(card) {
+    certReturnFocus = card;
+    certModalTitle.textContent = card.dataset.certTitle || 'Certificate';
+    certFrame.src = card.getAttribute('href');
+    certModalOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    certModalClose.focus();
+  }
+  function closeCertModal() {
+    certModalOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+    // clear the iframe after the close transition so the PDF stops loading/rendering
+    setTimeout(() => { certFrame.src = ''; }, 300);
+    if (certReturnFocus) certReturnFocus.focus();
+  }
+
+  document.querySelectorAll('.cert-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      openCertModal(card);
+    });
+  });
+  certModalClose.addEventListener('click', closeCertModal);
+  certModalOverlay.addEventListener('click', (e) => {
+    if (e.target === certModalOverlay) closeCertModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && certModalOverlay.classList.contains('open')) closeCertModal();
   });
 
   // WhatsApp — number is only assembled at click-time (not a static href in the
