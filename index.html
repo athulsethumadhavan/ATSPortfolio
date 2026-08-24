@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#06070d" id="themeColorMeta">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://wa.me; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://wa.me mailto:;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://wa.me https://api.web3forms.com; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://wa.me mailto:;">
 <title>Athul T S — Mobile Application Developer</title>
 <meta name="description" content="Athul T S — Mobile Application Developer with 9+ years building native iOS and Flutter apps.">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -596,8 +596,17 @@
   .form-error {
     color: var(--neon-3); font-size: 0.85rem; margin-bottom: 14px; min-height: 1.2em; text-align: left;
   }
-  #cfSubmit { width: 100%; justify-content: center; }
+  #cfSubmit { width: 100%; justify-content: center; transition: opacity .2s ease; }
+  #cfSubmit:disabled { opacity: 0.6; cursor: default; }
   .form-note { font-size: 0.78rem; color: var(--text-dim); text-align: left; margin-top: 14px; line-height: 1.6; }
+  .form-success { text-align: center; padding: 12px 0 6px; }
+  .form-success .success-icon {
+    width: 56px; height: 56px; margin: 0 auto 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(74,222,128,0.14); color: #4ade80;
+    box-shadow: 0 0 24px rgba(74,222,128,0.25);
+  }
+  .form-success p { color: var(--text-dim); font-size: 0.98rem; line-height: 1.6; }
 
   /* ---------- CERTIFICATE MODAL ---------- */
   .cert-modal-box {
@@ -1007,7 +1016,7 @@
   <div class="modal-box glass" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
     <button type="button" class="modal-close" id="contactModalClose" aria-label="Close">&times;</button>
     <h3 id="contactModalTitle">Send me a message</h3>
-    <p class="modal-sub">Fill this in — it'll open your email app with everything ready to send to me directly.</p>
+    <p class="modal-sub" id="cfIntro">Fill this in and hit send — it goes straight to my inbox, no email app needed.</p>
     <form id="contactForm" novalidate>
       <div class="form-group">
         <label for="cf-name">Name</label>
@@ -1028,8 +1037,14 @@
       </div>
       <p class="form-error" id="cfError"></p>
       <button type="submit" class="btn btn-primary" id="cfSubmit">Send Message</button>
-      <p class="form-note">This opens your own email app with the message pre-filled — you'll still need to hit send there.</p>
+      <p class="form-note">Sent directly and securely — I'll reply to the email address you enter above.</p>
     </form>
+    <div class="form-success" id="cfSuccess" hidden>
+      <div class="success-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <p>Message sent — thanks! I'll get back to you soon.</p>
+    </div>
   </div>
 </div>
 
@@ -1135,6 +1150,10 @@
   const contactModalClose = document.getElementById('contactModalClose');
   const contactForm = document.getElementById('contactForm');
   const cfError = document.getElementById('cfError');
+  const cfSubmit = document.getElementById('cfSubmit');
+  const cfSuccess = document.getElementById('cfSuccess');
+  const cfIntro = document.getElementById('cfIntro');
+  const WEB3FORMS_ACCESS_KEY = '0fa8b6d1-5970-44eb-bce4-e2d3b99331b7';
 
   function openModal() {
     contactModalOverlay.classList.add('open');
@@ -1143,6 +1162,13 @@
   function closeModal() {
     contactModalOverlay.classList.remove('open');
     cfError.textContent = '';
+    // reset back to the form view after the close transition finishes,
+    // so a message that was just sent doesn't linger the next time it's opened
+    setTimeout(() => {
+      contactForm.hidden = false;
+      cfSuccess.hidden = true;
+      cfIntro.hidden = false;
+    }, 300);
   }
 
   openContactModal.addEventListener('click', openModal);
@@ -1156,7 +1182,7 @@
     if (e.key === 'Escape' && contactModalOverlay.classList.contains('open')) closeModal();
   });
 
-  contactForm.addEventListener('submit', (e) => {
+  contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     cfError.textContent = '';
 
@@ -1190,12 +1216,44 @@
       return;
     }
 
-    const subject = encodeURIComponent('Portfolio contact from ' + name);
-    const body = encodeURIComponent(message + '\n\n— ' + name + ' (' + email + ')');
-    window.location.href = 'mailto:athulsethumadhavan@gmail.com?subject=' + subject + '&body=' + body;
+    cfSubmit.disabled = true;
+    const originalLabel = cfSubmit.textContent;
+    cfSubmit.textContent = 'Sending…';
 
-    contactForm.reset();
-    closeModal();
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: 'Portfolio contact from ' + name,
+          from_name: name,
+          name: name,
+          email: email,
+          message: message,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && data.success) {
+        contactForm.reset();
+        contactForm.hidden = true;
+        cfIntro.hidden = true;
+        cfSuccess.hidden = false;
+        setTimeout(closeModal, 2600);
+      } else {
+        let msg = data.message || 'Something went wrong sending your message.';
+        if (!/[.!?]$/.test(msg)) msg += '.';
+        cfError.innerHTML = msg +
+          ' You can also email me directly at <a href="mailto:athulsethumadhavan@gmail.com" style="color:var(--neon-1);text-decoration:underline;">athulsethumadhavan@gmail.com</a>.';
+      }
+    } catch (err) {
+      cfError.innerHTML = 'Network error — please try again, or email me directly at ' +
+        '<a href="mailto:athulsethumadhavan@gmail.com" style="color:var(--neon-1);text-decoration:underline;">athulsethumadhavan@gmail.com</a>.';
+    } finally {
+      cfSubmit.disabled = false;
+      cfSubmit.textContent = originalLabel;
+    }
   });
 
   // Certificate modal — clicking a certification card opens the PDF in an
