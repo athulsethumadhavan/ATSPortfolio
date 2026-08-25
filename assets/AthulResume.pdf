@@ -124,8 +124,10 @@ endobj
 /Font <<
 /F1 10 0 R
 /F1-0 15 0 R
+/F1-1 16 0 R
 /F2 11 0 R
-/F2-0 16 0 R
+/F2-0 17 0 R
+/F2-1 18 0 R
 /F3 12 0 R
 >>
 /ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
@@ -140,9 +142,10 @@ endobj
 endobj
 14 0 obj
 <<
-/Length 5681
+/Length 7051
 >>
 stream
+q
 q
 1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
 q
@@ -477,6 +480,97 @@ T*
 ET
 Q
 
+Q
+
+q
+0.0 0.0 612 792 re
+W
+n
+1 0 0 1 0 0 cm
+BT
+/F1-1 12 Tf
+14.4 TL
+ET
+0 0 0 rg
+n
+65.6 320.826 m
+65.6 321.7097 64.88366 322.426 64 322.426 c
+63.11634 322.426 62.4 321.7097 62.4 320.826 c
+62.4 319.9423 63.11634 319.226 64 319.226 c
+64.88366 319.226 65.6 319.9423 65.6 320.826 c
+f*
+BT
+/F2-1 9.7 Tf
+11.64 TL
+ET
+BT
+1 0 0 1 72 317.625 Tm
+(Introduction\040to\040subagents) Tj
+T*
+ET
+BT
+/F1-1 9.7 Tf
+11.64 TL
+ET
+BT
+1 0 0 1 191.6398 317.625 Tm
+(\040\040\227\040\040Anthropic\054\040Aug\0402026) Tj
+T*
+ET
+0 0 0 rg
+n
+65.6 303.826 m
+65.6 304.7097 64.88366 305.426 64 305.426 c
+63.11634 305.426 62.4 304.7097 62.4 303.826 c
+62.4 302.9423 63.11634 302.226 64 302.226 c
+64.88366 302.226 65.6 302.9423 65.6 303.826 c
+f*
+BT
+/F2-1 9.7 Tf
+11.64 TL
+ET
+BT
+1 0 0 1 72 300.625 Tm
+(Introduction\040to\040agent\040skills) Tj
+T*
+ET
+BT
+/F1-1 9.7 Tf
+11.64 TL
+ET
+BT
+1 0 0 1 195.966 300.625 Tm
+(\040\040\227\040\040Anthropic\054\040Aug\0402026) Tj
+T*
+ET
+0 0 0 rg
+n
+65.6 286.826 m
+65.6 287.7097 64.88366 288.426 64 288.426 c
+63.11634 288.426 62.4 287.7097 62.4 286.826 c
+62.4 285.9423 63.11634 285.226 64 285.226 c
+64.88366 285.226 65.6 285.9423 65.6 286.826 c
+f*
+BT
+/F2-1 9.7 Tf
+11.64 TL
+ET
+BT
+1 0 0 1 72 283.625 Tm
+(Introduction\040to\040Model\040Context\040Protocol) Tj
+T*
+ET
+BT
+/F1-1 9.7 Tf
+11.64 TL
+ET
+BT
+1 0 0 1 251.9932 283.625 Tm
+(\040\040\227\040\040Anthropic\054\040Aug\0402026) Tj
+T*
+ET
+Q
+
 
 endstream
 endobj
@@ -491,6 +585,24 @@ endobj
 endobj
 16 0 obj
 <<
+/BaseFont /Helvetica
+/Encoding /WinAnsiEncoding
+/Name /F1
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+17 0 obj
+<<
+/BaseFont /Helvetica-Bold
+/Encoding /WinAnsiEncoding
+/Name /F2
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+18 0 obj
+<<
 /BaseFont /Helvetica-Bold
 /Encoding /WinAnsiEncoding
 /Name /F2
@@ -499,7 +611,7 @@ endobj
 >>
 endobj
 xref
-0 17
+0 19
 0000000000 65535 f 
 0000000015 00000 n 
 0000000081 00000 n 
@@ -514,15 +626,17 @@ xref
 0000003328 00000 n 
 0000003441 00000 n 
 0000003557 00000 n 
-0000003819 00000 n 
-0000009553 00000 n 
-0000009661 00000 n 
+0000003845 00000 n 
+0000010949 00000 n 
+0000011057 00000 n 
+0000011165 00000 n 
+0000011278 00000 n 
 trailer
 <<
-/Size 17
+/Size 19
 /Root 3 0 R
 /Info 2 0 R
 >>
 startxref
-9774
+11391
 %%EOF
